@@ -7,6 +7,8 @@ from app.views.customers_views import (
     soft_delete_customer,
     update_customer_info,
 )
+from app.views.exemplaries_views import add_exemplary, list_all_exemplaries, reactivate_exemplary, remove_exemplary
+from app.views.work_views import add_work, list_all_works, update_work
 from django.contrib import admin
 from django.urls import path
 
@@ -18,7 +20,14 @@ urlpatterns = [
     path("customer/<int:customer_id>/reactivate", reactivate_customer),
     path("customer/<int:customer_id>/update", update_customer_info),
     path("customer/add", add_a_customer),
-    path("authors", list_all_authors),
+    path("authors/", list_all_authors),
     path("author/add", add_author),
     path("author/<int:author_id>/update", edit_author),
+    path("works/", list_all_works),
+    path("work/add", add_work),
+    path("work/<int:work_id>/update", update_work),
+    path("exemplaries/", list_all_exemplaries),
+    path("exemplary/add", add_exemplary),
+    path("exemplary/<int:exemplary_id>/delete", remove_exemplary),
+    path("exemplary/<int:exemplary_id>/reactivate", reactivate_exemplary),
 ]
