@@ -7,6 +7,8 @@ def serialize_customer(customer: Customer) -> dict:
         "first_name": customer.first_name,
         "last_name": customer.last_name,
         "email": customer.email,
+        "type": customer.user_type,
+        "is_active": customer.is_active,
     }
 
 

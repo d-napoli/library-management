@@ -1,21 +1,20 @@
 import json
 from http import HTTPStatus
 
-from app.constants.customers_constants import (customer_exists_error,
-                                               customer_not_found_error)
-from app.forms.customer_forms import AddCustomerForm, UpdateCustomerForm
-from app.models import Customer
-from app.services.customer_svc import (customer_already_exists,
-                                       serialize_customer)
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import (require_GET, require_http_methods,
-                                          require_POST)
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
+
+from app.constants.customers_constants import customer_exists_error, customer_not_found_error
+from app.forms.customer_forms import AddCustomerForm, UpdateCustomerForm
+from app.models import Customer
+from app.services.customer_svc import customer_already_exists, serialize_customer
 
 
+@csrf_exempt
 @require_GET
 def list_all_customers(request):
-    all_customers = Customer.objects.filter(is_active=True).order_by("pk")
+    all_customers = Customer.objects.filter().order_by("pk")
     data = json.dumps([serialize_customer(c) for c in all_customers])
     return JsonResponse({"customers": json.loads(data)})
 
