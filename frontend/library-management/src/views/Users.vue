@@ -4,9 +4,7 @@
             <PageHeader title="Usuários" />
         </v-col>
 
-        <v-col cols="12" md="6"></v-col>
-
-        <v-col cols="12" md="2">
+        <v-col class="text-right" cols="12" md="2">
             <NewUserModal @snackBar="handleSnackBar($event)" />
         </v-col>
     </v-row>

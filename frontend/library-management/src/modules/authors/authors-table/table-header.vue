@@ -16,5 +16,6 @@
 const menuItems = [
     "ID",
     "Nome",
+    "Ações"
 ]
 </script>
