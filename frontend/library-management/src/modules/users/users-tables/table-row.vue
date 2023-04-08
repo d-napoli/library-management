@@ -30,7 +30,7 @@
                     <v-dialog v-model="$state.isOpen" width="800">
                         <template v-slot:activator="{ props }">
                             <v-list-item-title v-bind="props">
-                                <v-icon>mdi-delete</v-icon>
+                                <v-icon>{{ $props.customer.is_active ? "mdi-delete" : "mdi-check" }}</v-icon>
                                 &nbsp;{{ $state.statusText }}
                             </v-list-item-title>
                         </template>

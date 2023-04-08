@@ -1,20 +1,21 @@
 import json
 from http import HTTPStatus
 
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
+
 from app.constants.work_constants import work_already_exists_error, work_not_found_error
 from app.forms.work_forms import AddWorkForm, UpdateWorkForm
 from app.models import Author, Work
 from app.services.work_svc import serialize_work, work_exists
-from django.http.response import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 
 @csrf_exempt
 @require_GET
 def list_all_works(request):
     all_works = Work.objects.all().order_by("pk")
-    data = json.dumps([serialize_work(w) for w in all_works])
+    data = json.dumps([serialize_work(w.pk) for w in all_works])
     return JsonResponse({"works": json.loads(data)}, status=HTTPStatus.ACCEPTED)
 
 
@@ -30,7 +31,7 @@ def add_work(request):
     work = Work(title=form.title, author=author, type=form.type)
     work.save()
 
-    return_body = serialize_work(work)
+    return_body = serialize_work(work.pk)
 
     return JsonResponse(return_body, status=HTTPStatus.ACCEPTED)
 
@@ -59,4 +60,4 @@ def update_work(request, work_id):
     work.type = form.type if form.type else work.type
     work.save()
 
-    return JsonResponse(serialize_work(work), status=HTTPStatus.ACCEPTED)
+    return JsonResponse(serialize_work(work.pk), status=HTTPStatus.ACCEPTED)

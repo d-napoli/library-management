@@ -1,13 +1,17 @@
 import json
 from http import HTTPStatus
 
-from app.constants.authors_constants import author_exists_error, author_not_found_error
-from app.forms.authors_forms import BaseAuthorForm
-from app.models import Author
-from app.services.authors_svc import author_exists, author_name_taken, serialize_author
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_GET, require_http_methods, require_POST
+from django.views.decorators.http import (require_GET, require_http_methods,
+                                          require_POST)
+
+from app.constants.authors_constants import (author_exists_error,
+                                             author_not_found_error)
+from app.forms.authors_forms import BaseAuthorForm
+from app.models import Author
+from app.services.authors_svc import (author_exists, author_name_taken,
+                                      serialize_author)
 
 
 @csrf_exempt
@@ -16,7 +20,7 @@ def add_author(request):
     form = BaseAuthorForm.parse_raw(request.body)
 
     if author_name_taken(form.name):
-        return JsonResponse({"message": author_exists_error()}, status=HTTPStatus.CONFLICT)
+        return JsonResponse({"message": author_exists_error(form.name)}, status=HTTPStatus.CONFLICT)
 
     author = Author(name=form.name)
     author.save()

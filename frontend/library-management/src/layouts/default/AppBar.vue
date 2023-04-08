@@ -46,7 +46,7 @@ const $data = {
     {
       "icon": 'mdi-send',
       "name": 'Obras',
-      "route": "/users"
+      "route": "/works"
     },
     {
       "icon": 'mdi-book',

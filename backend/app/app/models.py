@@ -29,7 +29,7 @@ class Work(models.Model):
 
 
 class Exemplary(models.Model):
-    work = models.ForeignKey(Work, on_delete=models.CASCADE, null=True)
+    work = models.ForeignKey(Work, on_delete=models.CASCADE, null=True, related_name="work_rel")
     is_active = models.BooleanField(default=True)
 
 
