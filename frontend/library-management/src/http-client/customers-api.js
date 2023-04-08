@@ -6,10 +6,13 @@ const inactivateCustomer = (customer_id) => httpClient.delete(`customer/${custom
 
 const reactivateCustomer = (customer_id) => httpClient.patch(`customer/${customer_id}/reactivate`)
 
+const newCustomer = (params) => httpClient.post("customer/add", params)
+
 const CustomerAPI = {
     getAllCustomers,
     inactivateCustomer,
-    reactivateCustomer
+    reactivateCustomer,
+    newCustomer
 }
 
 export { CustomerAPI };

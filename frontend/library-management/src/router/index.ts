@@ -23,6 +23,17 @@ const routes = [
         component: () => import('@/views/Users.vue')
       },
     ],
+  },
+  {
+    path: '/authors',
+    component: () => import ('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Authors',
+        component: () => import('@/views/Authors.vue')
+      },
+    ]
   }
 ]
 

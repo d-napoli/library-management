@@ -36,15 +36,15 @@
                         </template>
 
                         <v-container>
-                            <v-card>
-                                <v-card-title>
+                            <v-card class="pl-5 pr-5">
+                                <v-card-title class="pt-10">
                                     <span class="text-h4">
                                         {{ $state.statusText }} usuário <b>{{ customer.first_name }} {{ customer.last_name
                                         }}</b>?
                                     </span>
                                 </v-card-title>
 
-                                <v-card-actions>
+                                <v-card-actions class="pb-5">
                                     <v-spacer></v-spacer>
 
                                     <v-btn color="red" flat variant="text" @click="$state.isOpen = !$state.isOpen">
@@ -89,7 +89,7 @@ const $props = defineProps({
 const $state = reactive({
     isOpen: false,
     isLoadingActionButton: false,
-    statusText: computed(() => !$props.customer.is_active ? "ativar" : "inativar"),
+    statusText: computed(() => !$props.customer.is_active ? "Ativar" : "Inativar"),
 });
 
 const $alertState = reactive({
