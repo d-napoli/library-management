@@ -5,7 +5,7 @@
         </v-col>
 
         <v-col class="text-right" cols="12" md="2">
-            <v-btn>Novo exemplar</v-btn>
+            <NewExemplaryModal @snackBar="handleSnackBar($event)" />
         </v-col>
     </v-row>
 
@@ -42,7 +42,7 @@ import PageHeader from '@/components/PageHeader.vue';
 import { TableHeader, TableRow } from '@/modules/exemplaries/exemplaries-tables';
 import { onMounted, reactive } from 'vue';
 import { ExemplaryServices } from '@/services';
-// import NewExemplaryModal from '@/modules/exemplaries/new-exemplary-modal.vue'
+import NewExemplaryModal from '@/modules/exemplaries/new-exemplary-modal.vue'
 
 const $state = reactive({
     exemplaries: null,
@@ -73,13 +73,13 @@ const $alertState = reactive({
     duration: 1000
 })
 
-// const handleSnackBar = (event) => {
-//     $alertState.isActive = true
-//     $alertState.text = event.title
-//     $alertState.type = event.type
+const handleSnackBar = (event) => {
+    $alertState.isActive = true
+    $alertState.text = event.title
+    $alertState.type = event.type
 
-//     if (event.type == "success") {
-//         requestAllWorks();
-//     }
-// }
+    if (event.type == "success") {
+        requestAllExemplaries();
+    }
+}
 </script>
