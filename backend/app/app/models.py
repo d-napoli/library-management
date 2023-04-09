@@ -36,5 +36,6 @@ class Exemplary(models.Model):
 class Reservation(models.Model):
     start_date = models.DateField(null=False)
     end_date = models.DateField(null=False)
+    return_date = models.DateField(null=True)
     reserved_customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    work = models.ForeignKey(Work, on_delete=models.CASCADE, null=True)
+    exemplary = models.ForeignKey(Exemplary, on_delete=models.CASCADE, null=True)

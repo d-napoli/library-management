@@ -1,7 +1,7 @@
 <template>
     <v-row align="center" justify="space-between">
         <v-col cols="12" md="4">
-            <PageHeader title="Exemplares" />
+            <PageHeader title="Empréstimos" />
         </v-col>
 
         <v-col class="text-right" cols="12" md="2">
@@ -15,11 +15,11 @@
                 <v-progress-circular indeterminate color="primary"></v-progress-circular>
             </v-container>
 
-            <TableHeader v-else :items="$state.exemplaries">
+            <TableHeader v-else :items="$state.loans">
                 <tbody>
-                    <tr v-for="exemplary in $state.exemplaries" :key="exemplary.id">
-                        <TableRow :exemplary="exemplary">
-                            <TableActions @snackBar="handleSnackBar($event)" :exemplary="exemplary" />
+                    <tr v-for="loan in $state.loans" :key="loan.id">
+                        <TableRow :loan="loan">
+                            <TableActions @snackBar="handleSnackBar($event)" :loan="loan" />
                         </TableRow>
                     </tr>
                 </tbody>
@@ -27,7 +27,7 @@
         </v-col>
     </v-row>
 
-    <v-snackbar v-model="$alertState.isActive" :color="$alertState.type" :timeout="2000">
+    <!-- <v-snackbar v-model="$alertState.isActive" :color="$alertState.type" :timeout="2000">
         {{ $alertState.text }}
 
         <template v-slot:actions>
@@ -35,53 +35,53 @@
                 Fechar
             </v-btn>
         </template>
-    </v-snackbar>
+    </v-snackbar> -->
 </template>
 
 <script setup>
 import PageHeader from '@/components/PageHeader.vue';
 
-import { TableHeader, TableRow, TableActions } from '@/modules/exemplaries/exemplaries-tables';
+import { TableHeader, TableRow, TableActions } from '@/modules/loans/loans-tables';
 import { onMounted, reactive } from 'vue';
-import { ExemplaryServices } from '@/services';
+import { LoanServices } from '@/services';
 import NewExemplaryModal from '@/modules/exemplaries/new-exemplary-modal.vue'
 
 const $state = reactive({
-    exemplaries: null,
+    loans: null,
     isLoading: false,
     authors: null,
 });
 
 onMounted(() => {
-    requestAllExemplaries();
+    requestAllLoans();
 });
 
-const requestAllExemplaries = async () => {
+const requestAllLoans = async () => {
     $state.isLoading = true;
 
-    ExemplaryServices.getAllExemplaries()
-        .then(({ exemplaries }) => {
-            $state.exemplaries = exemplaries
+    LoanServices.getAllLoans()
+        .then(({ loans }) => {
+            $state.loans = loans
         })
         .finally(() => {
             $state.isLoading = false;
         });
 }
 
-const $alertState = reactive({
-    isActive: false,
-    text: null,
-    type: "info",
-    duration: 1000
-})
+// const $alertState = reactive({
+//     isActive: false,
+//     text: null,
+//     type: "info",
+//     duration: 1000
+// })
 
-const handleSnackBar = (event) => {
-    $alertState.isActive = true
-    $alertState.text = event.title
-    $alertState.type = event.type
+// const handleSnackBar = (event) => {
+//     $alertState.isActive = true
+//     $alertState.text = event.title
+//     $alertState.type = event.type
 
-    if (event.type == "success") {
-        requestAllExemplaries();
-    }
-}
+//     if (event.type == "success") {
+//         requestAllExemplaries();
+//     }
+// }
 </script>

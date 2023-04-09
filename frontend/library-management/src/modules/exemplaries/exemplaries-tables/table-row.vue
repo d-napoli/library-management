@@ -11,7 +11,17 @@
         </v-chip>
     </td>
 
-    <td>{{ $props.exemplary.quantity }}</td>
+    <td>
+        <v-chip :color="getStatusColor($props.exemplary.active)">
+            {{ getStatusText($props.exemplary.active) }}
+        </v-chip>
+    </td>
+
+    <td>
+        <v-chip :color="$props.exemplary.is_borrowed ? 'success' : 'error'">
+            {{ $props.exemplary.is_borrowed ? "Sim" : "Não" }}
+        </v-chip>
+    </td>
 
     <td>
         <slot />
@@ -19,15 +29,7 @@
 </template>
 
 <script setup>
-import { WORKS_TYPES } from '@/constants'
-
-const getBookType = (bookType) => {
-    return WORKS_TYPES[bookType]["name"]
-}
-
-const getBookTypeColor = (bookType) => {
-    return WORKS_TYPES[bookType]["color"]
-}
+import { getBookType, getBookTypeColor, getStatusText, getStatusColor } from '@/constants'
 
 const $props = defineProps({
     exemplary: {

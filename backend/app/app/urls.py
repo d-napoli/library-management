@@ -1,3 +1,6 @@
+from django.contrib import admin
+from django.urls import path
+
 from app.views.authors_views import add_author, edit_author, list_all_authors
 from app.views.customers_views import (
     add_a_customer,
@@ -8,9 +11,8 @@ from app.views.customers_views import (
     update_customer_info,
 )
 from app.views.exemplaries_views import add_exemplary, list_all_exemplaries, reactivate_exemplary, remove_exemplary
+from app.views.loans_views import can_customer_loans, list_all_loans, return_loan
 from app.views.work_views import add_work, list_all_works, update_work
-from django.contrib import admin
-from django.urls import path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -30,4 +32,7 @@ urlpatterns = [
     path("exemplary/add", add_exemplary),
     path("exemplary/<int:exemplary_id>/delete", remove_exemplary),
     path("exemplary/<int:exemplary_id>/reactivate", reactivate_exemplary),
+    path("loans", list_all_loans),
+    path("loans/user/enabled", can_customer_loans),
+    path("loans/return", return_loan),
 ]

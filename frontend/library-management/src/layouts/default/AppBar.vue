@@ -56,7 +56,7 @@ const $data = {
     {
       "icon": 'mdi-ray-start-end',
       "name": 'Empréstimos',
-      "route": "/users"
+      "route": "/loans"
     },
   ]
 }

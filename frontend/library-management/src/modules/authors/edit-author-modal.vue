@@ -1,9 +1,7 @@
 <template>
     <v-menu>
         <template v-slot:activator="{ props }">
-            <v-btn v-bind="props">
-                <v-icon>mdi-menu-down</v-icon>
-            </v-btn>
+            <v-btn icon="mdi-menu-down" variant="text" v-bind="props" />
         </template>
 
         <v-list>

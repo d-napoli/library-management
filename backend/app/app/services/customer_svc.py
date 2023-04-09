@@ -12,6 +12,12 @@ def serialize_customer(customer: Customer) -> dict:
     }
 
 
+def customer_exists(id: int) -> bool:
+    customer = Customer.objects.filter(pk=id).first()
+
+    return customer
+
+
 def customer_already_exists(email: str) -> bool:
     customer = Customer.objects.filter(email=email)
 

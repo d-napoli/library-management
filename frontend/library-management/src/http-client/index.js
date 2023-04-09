@@ -3,3 +3,4 @@ export * from './authors-api';
 export * from './http-client';
 export * from './works-api';
 export * from './exemplaries-api';
+export * from './loans-api';

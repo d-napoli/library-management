@@ -13,7 +13,16 @@ const WORKS_TYPES = {
     }
 }
 
+const getBookType = (bookType) => {
+    return WORKS_TYPES[bookType]["name"]
+}
+
+const getBookTypeColor = (bookType) => {
+    return WORKS_TYPES[bookType]["color"]
+}
 
 export {
-    WORKS_TYPES
+    WORKS_TYPES,
+    getBookType,
+    getBookTypeColor
 }

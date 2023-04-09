@@ -4,12 +4,15 @@ const getAllExemplaries = () => httpClient.get("exemplaries/")
 
 const newExemplary = (params) => httpClient.post("exemplary/add", params)
 
-// const UpdateExemplary = (exemplary_id, params) => httpClient.patch(`exemplary/${exemplary_id}/update`, params)
+const inactivateExemplary = (exemplary_id) => httpClient.delete(`exemplary/${exemplary_id}/delete`)
+
+const reactivateExemplary = (exemplary_id) => httpClient.patch(`exemplary/${exemplary_id}/reactivate`)
 
 const ExemplaryAPI = {
     getAllExemplaries,
     newExemplary,
-    // UpdateExemplary
+    inactivateExemplary,
+    reactivateExemplary,
 }
 
 export { ExemplaryAPI };

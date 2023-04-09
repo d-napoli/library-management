@@ -1,4 +1,4 @@
-from app.models import Exemplary
+from app.models import Exemplary, Reservation
 
 
 def serialize_exemplary(exemplary: Exemplary):
@@ -7,4 +7,11 @@ def serialize_exemplary(exemplary: Exemplary):
         "title": exemplary.work.title,
         "author": exemplary.work.author.name,
         "type": exemplary.work.type,
+        "is_borrowed": is_exemplary_borrowed(exemplary),
+        "active": exemplary.is_active,
     }
+
+
+def is_exemplary_borrowed(exemplary):
+    loans = Reservation.objects.filter(exemplary=exemplary, return_date=None)
+    return bool(loans)

@@ -18,8 +18,13 @@ const menuItems = [
     "Título",
     "Autor",
     "Tipo",
-    "Status",
-    "Emprestado",
+    "Dt. Início",
+    "Dt. Fim",
+    "Dt. Retorno",
+    "Atrasado",
+    "Multa",
+    "Usuário",
+    "E-mail Usuário",
     "Ações"
 ]
 </script>

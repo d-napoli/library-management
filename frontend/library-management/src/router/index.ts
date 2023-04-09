@@ -56,6 +56,17 @@ const routes = [
         component: () => import('@/views/Exemplaries.vue')
       },
     ]
+  },
+  {
+    path: '/loans',
+    component: () => import ('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Loans',
+        component: () => import('@/views/Loans.vue')
+      },
+    ]
   }
 ]
 

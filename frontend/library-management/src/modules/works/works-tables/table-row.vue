@@ -19,15 +19,7 @@
 </template>
 
 <script setup>
-import { WORKS_TYPES } from '@/constants'
-
-const getBookType = (bookType) => {
-    return WORKS_TYPES[bookType]["name"]
-}
-
-const getBookTypeColor = (bookType) => {
-    return WORKS_TYPES[bookType]["color"]
-}
+import { getBookType, getBookTypeColor } from '@/constants'
 
 const $props = defineProps({
     work: {

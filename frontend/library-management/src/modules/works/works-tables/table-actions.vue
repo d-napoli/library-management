@@ -1,9 +1,7 @@
 <template>
     <v-menu>
         <template v-slot:activator="{ props }">
-            <v-btn v-bind="props">
-                <v-icon>mdi-menu-down</v-icon>
-            </v-btn>
+            <v-btn v-bind="props" variant="text" icon="mdi-menu-down" />
         </template>
 
         <v-list>
@@ -142,9 +140,6 @@ const constructPayload = () => {
 
 const updateAuthor = () => {
     let payload = constructPayload()
-
-    console.log("Payload")
-    console.log(payload)
 
     $state.isLoading = true
 

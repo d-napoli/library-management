@@ -20,9 +20,7 @@
     <td>
         <v-menu>
             <template v-slot:activator="{ props }">
-                <v-btn v-bind="props">
-                    <v-icon>mdi-menu-down</v-icon>
-                </v-btn>
+                <v-btn variant="text" icon="mdi-menu-down" v-bind="props" />
             </template>
 
             <v-list>
