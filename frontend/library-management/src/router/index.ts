@@ -45,6 +45,17 @@ const routes = [
         component: () => import('@/views/Obras.vue')
       },
     ]
+  },
+  {
+    path: '/exemplaries',
+    component: () => import ('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Exemplaries',
+        component: () => import('@/views/Exemplaries.vue')
+      },
+    ]
   }
 ]
 

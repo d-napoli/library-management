@@ -42,6 +42,11 @@
                                                 <v-combobox v-else v-model="$state.newAuthor" label="Novo Autor"
                                                     :items="$state.authorsList"></v-combobox>
                                             </v-col>
+
+                                            <v-col cols="12" md="6">
+                                                <v-combobox v-model="$state.newType" label="Tipo da Obra"
+                                                    :items="getWorkTypes()"></v-combobox>
+                                            </v-col>
                                         </v-row>
                                     </v-container>
                                 </v-form>
@@ -76,6 +81,7 @@
 <script setup>
 import { onMounted, reactive, computed } from 'vue'
 import { AuthorServices, WorksServices } from '@/services';
+import { WORKS_TYPES } from '@/constants'
 
 const $props = defineProps({
     work: {
@@ -91,6 +97,21 @@ const isButtonEnabled = computed(() => {
 onMounted(() => {
     requestAllAuthors()
 })
+
+const getWorkTypes = () => {
+    let returnArray = []
+
+    for (let type in WORKS_TYPES) {
+        let typeKey = WORKS_TYPES[type].name
+        let typeValue = type
+
+        $state.invertedWorkTypes[typeKey] = typeValue
+
+        returnArray.push(typeKey)
+    }
+
+    return returnArray
+}
 
 const requestAllAuthors = async () => {
     $state.isLoadingAuthors = true;
@@ -109,11 +130,21 @@ const requestAllAuthors = async () => {
         })
 }
 
+const constructPayload = () => {
+    let payload = {}
+
+    if ($state.newAuthor !== $props.work.author) payload["author_name"] = $state.newAuthor
+    if ($state.newTitle !== $props.work.title) payload["title"] = $state.newTitle
+    if ($state.newType !== null) payload["type"] = $state.invertedWorkTypes[$state.newType]
+
+    return payload
+}
+
 const updateAuthor = () => {
-    let payload = {
-        "title": $state.newTitle,
-        "author_name": $state.newAuthor
-    }
+    let payload = constructPayload()
+
+    console.log("Payload")
+    console.log(payload)
 
     $state.isLoading = true
 
@@ -141,11 +172,13 @@ const updateAuthor = () => {
 }
 
 const $state = reactive({
+    invertedWorkTypes: {},
     isLoading: false,
     isLoadingAuthors: false,
     isOpen: false,
     newTitle: $props.work.title,
     newAuthor: $props.work.author,
+    newType: null,
     authorsList: []
 })
 

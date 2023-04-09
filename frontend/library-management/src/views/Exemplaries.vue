@@ -1,11 +1,11 @@
 <template>
     <v-row align="center" justify="space-between">
         <v-col cols="12" md="4">
-            <PageHeader title="Obras" />
+            <PageHeader title="Exemplares" />
         </v-col>
 
         <v-col class="text-right" cols="12" md="2">
-            <NewWorkModal @snackBar="handleSnackBar($event)" />
+            <v-btn>Novo exemplar</v-btn>
         </v-col>
     </v-row>
 
@@ -15,12 +15,10 @@
                 <v-progress-circular indeterminate color="primary"></v-progress-circular>
             </v-container>
 
-            <TableHeader v-else :items="$state.works">
+            <TableHeader v-else :items="$state.exemplaries">
                 <tbody>
-                    <tr v-for="work in $state.works" :key="work.id">
-                        <TableRow :work="work">
-                            <TableActions @snackBar="handleSnackBar($event)" :work="work" />
-                        </TableRow>
+                    <tr v-for="exemplary in $state.exemplaries" :key="exemplary.id">
+                        <TableRow :exemplary="exemplary" />
                     </tr>
                 </tbody>
             </TableHeader>
@@ -41,27 +39,27 @@
 <script setup>
 import PageHeader from '@/components/PageHeader.vue';
 
-import { TableHeader, TableRow, TableActions } from '@/modules/works/works-tables';
+import { TableHeader, TableRow } from '@/modules/exemplaries/exemplaries-tables';
 import { onMounted, reactive } from 'vue';
-import { WorksServices } from '@/services';
-import NewWorkModal from '@/modules/works/new-work-modal.vue'
+import { ExemplaryServices } from '@/services';
+// import NewExemplaryModal from '@/modules/exemplaries/new-exemplary-modal.vue'
 
 const $state = reactive({
-    works: null,
+    exemplaries: null,
     isLoading: false,
     authors: null,
 });
 
 onMounted(() => {
-    requestAllWorks();
+    requestAllExemplaries();
 });
 
-const requestAllWorks = async () => {
+const requestAllExemplaries = async () => {
     $state.isLoading = true;
 
-    WorksServices.getAllWorks()
-        .then(({ works }) => {
-            $state.works = works
+    ExemplaryServices.getAllExemplaries()
+        .then(({ exemplaries }) => {
+            $state.exemplaries = exemplaries
         })
         .finally(() => {
             $state.isLoading = false;
@@ -75,13 +73,13 @@ const $alertState = reactive({
     duration: 1000
 })
 
-const handleSnackBar = (event) => {
-    $alertState.isActive = true
-    $alertState.text = event.title
-    $alertState.type = event.type
+// const handleSnackBar = (event) => {
+//     $alertState.isActive = true
+//     $alertState.text = event.title
+//     $alertState.type = event.type
 
-    if (event.type == "success") {
-        requestAllWorks();
-    }
-}
+//     if (event.type == "success") {
+//         requestAllWorks();
+//     }
+// }
 </script>
