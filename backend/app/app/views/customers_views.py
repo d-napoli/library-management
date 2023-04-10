@@ -85,6 +85,7 @@ def update_customer_info(request, customer_id):
     if customer:
         customer.first_name = form.first_name if form.first_name else customer.first_name
         customer.last_name = form.last_name if form.last_name else customer.last_name
+        customer.user_type = form.user_type if form.user_type else customer.user_type
 
         if form.email and customer_already_exists(form.email):
             return JsonResponse({"message": customer_exists_error(form.email)}, status=HTTPStatus.CONFLICT)

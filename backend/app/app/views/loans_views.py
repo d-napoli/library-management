@@ -8,23 +8,27 @@ from django.views.decorators.http import require_GET, require_POST
 
 from app.constants.customers_constants import customer_cant_loan_error, customer_not_found_error
 from app.constants.exemplaries_constants import no_available_exemplaries_found
-from app.constants.loans_constants import wrong_payment_error, wrong_start_end_dates_error
+from app.constants.loans_constants import (
+    loan_blocked_by_teacher_error,
+    wrong_payment_error,
+    wrong_start_end_dates_error,
+)
 from app.forms.loans_forms import CanUserLoanForm, NewLoanForm, ReturnLoanForm
 from app.models import Reservation
-from app.services.customer_svc import can_customer_loan, return_customer_if_exists
+from app.services.customer_svc import can_customer_loan, is_customer_teacher, return_customer_if_exists
 from app.services.exemplaries_svc import (
     get_available_exemplary_based_on_work,
     is_exemplary_borrowed,
     return_exemplary_if_exists,
 )
 from app.services.loans_svc import dates_valid, get_fine, get_loan, serialize_loan
-from app.services.work_svc import get_work_if_exists
+from app.services.work_svc import get_teachers_name_who_blocked_loan, get_work_if_exists, is_work_blocked_to_loan
 
 
 @csrf_exempt
 @require_GET
 def list_all_loans(request):
-    loans = Reservation.objects.all().order_by("-end_date")
+    loans = Reservation.objects.all().order_by("-id")
 
     data = json.dumps([serialize_loan(l) for l in loans])
     return JsonResponse({"loans": json.loads(data)}, status=HTTPStatus.ACCEPTED)
@@ -88,6 +92,10 @@ def new_loan(request):
     if not work:
         return JsonResponse({"message": "Work not found"}, status=HTTPStatus.NOT_FOUND)
 
+    if is_work_blocked_to_loan(work):
+        teacher_name = get_teachers_name_who_blocked_loan(work)
+        return JsonResponse({"message": loan_blocked_by_teacher_error(teacher_name)}, status=HTTPStatus.CONFLICT)
+
     exemplary = get_available_exemplary_based_on_work(work)
 
     if not exemplary:
@@ -104,5 +112,14 @@ def new_loan(request):
 
     r = Reservation(start_date=start_date, end_date=end_date, reserved_customer=customer, exemplary=exemplary)
     r.save()
+
+    # if by some reason, the user is not a teacher
+    # i'll wont send and error
+    # i'll just ignore
+    if form.loan_blocked_by_teacher and is_customer_teacher(customer):
+        work.special_teacher_loan = True
+        work.teacher_reserved = customer
+
+        work.save()
 
     return JsonResponse({}, status=HTTPStatus.ACCEPTED)

@@ -23,18 +23,15 @@
                             </v-card-title>
 
                             <v-card-text>
-                                <v-card-text>
-                                    <v-form v-model="valid">
-                                        <v-container>
-                                            <v-row>
-                                                <v-col cols="12" md="12">
-                                                    <v-text-field v-model="$state.newName" label="Nome"
-                                                        required></v-text-field>
-                                                </v-col>
-                                            </v-row>
-                                        </v-container>
-                                    </v-form>
-                                </v-card-text>
+                                <v-form v-model="valid">
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12" md="12">
+                                                <v-text-field v-model="$state.newName" label="Nome" required></v-text-field>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-form>
                             </v-card-text>
 
                             <v-card-actions class="pb-5">

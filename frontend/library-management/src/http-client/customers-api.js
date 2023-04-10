@@ -8,11 +8,14 @@ const reactivateCustomer = (customer_id) => httpClient.patch(`customer/${custome
 
 const newCustomer = (params) => httpClient.post("customer/add", params)
 
+const updateCustomer = (customer_id, payload) => httpClient.patch(`customer/${customer_id}/update`, payload)
+
 const CustomerAPI = {
     getAllCustomers,
     inactivateCustomer,
     reactivateCustomer,
-    newCustomer
+    newCustomer,
+    updateCustomer
 }
 
 export { CustomerAPI };

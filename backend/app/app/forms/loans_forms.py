@@ -17,3 +17,4 @@ class NewLoanForm(BaseModel):
     end_date: str
     customer_id: int
     work_id: int
+    loan_blocked_by_teacher: Optional[bool]

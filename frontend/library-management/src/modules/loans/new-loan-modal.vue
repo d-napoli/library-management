@@ -53,6 +53,13 @@
                                         :enable-time-picker="false" />
                                 </v-col>
                             </v-row>
+
+                            <v-row v-if="isClientTeacher()">
+                                <v-col cols="12" md="12">
+                                    <v-checkbox v-model="$state.blockLoanByTeacher"
+                                        label="Bloquear livro para consumir apenas na biblioteca"></v-checkbox>
+                                </v-col>
+                            </v-row>
                         </v-container>
                     </v-form>
                 </v-card-text>
@@ -93,6 +100,7 @@ onMounted(() => {
 const $state = reactive({
     works: {},
     users: {},
+    blockLoanByTeacher: false,
     isLoading: false,
     isLoadingUsers: false,
     isLoadingWorks: false,
@@ -105,6 +113,17 @@ const $state = reactive({
 
 const isButtonEnabled = computed(() => {
     return true
+})
+
+
+const isClientTeacher = reactive(() => {
+    if ($state.selectedClient) {
+        const selectedUserEmail = $state.selectedClient.split("-")[1].trim()
+        const selectedClient = $state.users.filter((user) => user.email == selectedUserEmail)
+        return selectedClient[0].type == "teacher"
+    }
+
+    return false
 })
 
 const format = (date) => {
@@ -163,7 +182,8 @@ const createNewLoan = () => {
         "work_id": selectedWorkId,
         "customer_id": selectedClientId,
         "start_date": getDateIsoFormat(fromDate),
-        "end_date": getDateIsoFormat(toDate)
+        "end_date": getDateIsoFormat(toDate),
+        "loan_blocked_by_teacher": $state.blockLoanByTeacher
     }
 
     LoanServices.newLoan(payload)

@@ -29,3 +29,7 @@ def can_customer_loan(customer):
     can_loan = not customer_has_open_loans and customer.is_active
 
     return can_loan
+
+
+def is_customer_teacher(customer):
+    return customer.user_type == Customer.CustomerType.TEACHER

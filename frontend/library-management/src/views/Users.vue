@@ -25,7 +25,9 @@
             <TableHeader v-else :items="$state.customers">
                 <tbody>
                     <tr v-for="customer in $state.customers" :key="customer.id">
-                        <TableRow @snackBar="handleSnackBar($event)" :customer="customer" />
+                        <TableRow @snackBar="handleSnackBar($event)" :customer="customer">
+                            <TableActions :customer="customer" @snackBar="handleSnackBar($event)" />
+                        </TableRow>
                     </tr>
                 </tbody>
             </TableHeader>
@@ -47,7 +49,7 @@
 import PageHeader from '@/components/PageHeader.vue';
 import { CustomerServices } from '@/services';
 import { onMounted, reactive } from 'vue';
-import { TableHeader, TableRow } from '@/modules/users/users-tables';
+import { TableHeader, TableRow, TableActions } from '@/modules/users/users-tables';
 import NewUserModal from '@/modules/users/new-user-modal.vue'
 
 const handleSnackBar = (event) => {

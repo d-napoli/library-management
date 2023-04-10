@@ -7,6 +7,7 @@ class UpdateCustomerForm(BaseModel):
     first_name: Optional[str]
     last_name: Optional[str]
     email: Optional[str]
+    user_type: Optional[str]
 
 
 class AddCustomerForm(BaseModel):

@@ -26,6 +26,8 @@ class Work(models.Model):
     title = models.CharField(max_length=255, null=False)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     type = models.CharField(max_length=10, choices=TheType.choices, default=TheType.BOOK, null=False)
+    special_teacher_loan = models.BooleanField(null=True)
+    teacher_reserved = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
 
 
 class Exemplary(models.Model):
