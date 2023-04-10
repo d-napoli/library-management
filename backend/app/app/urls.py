@@ -11,7 +11,7 @@ from app.views.customers_views import (
     update_customer_info,
 )
 from app.views.exemplaries_views import add_exemplary, list_all_exemplaries, reactivate_exemplary, remove_exemplary
-from app.views.loans_views import can_customer_loans, list_all_loans, return_loan
+from app.views.loans_views import can_customer_loans, list_all_loans, new_loan, return_loan
 from app.views.work_views import add_work, list_all_works, update_work
 
 urlpatterns = [
@@ -35,4 +35,5 @@ urlpatterns = [
     path("loans", list_all_loans),
     path("loans/user/enabled", can_customer_loans),
     path("loans/return", return_loan),
+    path("loans/new", new_loan),
 ]

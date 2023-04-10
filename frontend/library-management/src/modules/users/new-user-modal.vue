@@ -84,7 +84,6 @@ const addNewCustomer = async () => {
 
     CustomerServices.newCustomer(payload)
         .then(() => {
-            console.log("Eu caí no then")
             $state.isOpen = false;
 
             $emit('snackBar', {
@@ -93,8 +92,6 @@ const addNewCustomer = async () => {
             });
         })
         .catch((error) => {
-            console.dir(error)
-            console.log("Eu caí no catch")
             $emit('snackBar', {
                 "title": error,
                 "type": "error"

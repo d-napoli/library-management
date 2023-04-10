@@ -1,4 +1,4 @@
-from app.models import Customer
+from app.models import Customer, Reservation
 
 
 def serialize_customer(customer: Customer) -> dict:
@@ -12,7 +12,7 @@ def serialize_customer(customer: Customer) -> dict:
     }
 
 
-def customer_exists(id: int) -> bool:
+def return_customer_if_exists(id: int) -> bool:
     customer = Customer.objects.filter(pk=id).first()
 
     return customer
@@ -22,3 +22,10 @@ def customer_already_exists(email: str) -> bool:
     customer = Customer.objects.filter(email=email)
 
     return len(customer) > 0
+
+
+def can_customer_loan(customer):
+    customer_has_open_loans = bool(Reservation.objects.filter(reserved_customer=customer))
+    can_loan = not customer_has_open_loans and customer.is_active
+
+    return can_loan

@@ -5,26 +5,33 @@
         </template>
 
         <v-list>
-            <v-list-item>
+            <v-list-item v-if="$props.loan.return_date == null">
                 <v-dialog v-model="$state.isOpen" width="800">
                     <template v-slot:activator="{ props }">
                         <v-list-item-title v-bind="props">
-                            <v-icon>mdi-pencil</v-icon>
-                            &nbsp;{{ getActionText($props.exemplary.active) }}
+                            <v-icon>mdi-keyboard-return</v-icon>
+                            &nbsp;Cadastrar retorno
                         </v-list-item-title>
                     </template>
 
                     <v-container>
                         <v-card class="pl-5 pr-5">
                             <v-card-title class="pt-10">
-                                <span class="text-h4" :title="$props.exemplary.title">
-                                    {{ getActionText($props.exemplary.active) }} obra?
+                                <span class="text-h4" :title="$props.loan.title">
+                                    Retornar empréstimo?
                                 </span>
-
-                                <p class="text">
-                                    {{ $props.exemplary.title }}
-                                </p>
                             </v-card-title>
+
+                            <template v-if="$props.loan.is_devolution_late">
+                                <v-card-text>
+                                    <span class="text-h6">O empréstimo estava atrasado
+                                        <v-icon>
+                                            {{ $state.paidFine ? 'mdi-emoticon-happy' : 'mdi-emoticon-sad' }}
+                                        </v-icon>
+                                    </span>
+                                    <v-checkbox v-model="$state.paidFine" :label="getCheckboxLabel()"></v-checkbox>
+                                </v-card-text>
+                            </template>
 
                             <v-card-actions class="pb-5">
                                 <v-spacer></v-spacer>
@@ -33,14 +40,13 @@
                                     Cancelar
                                 </v-btn>
 
-                                <v-btn :disabled="$state.isLoading" color="primary"
-                                    @click="handleAction($props.exemplary.active)">
+                                <v-btn :disabled="!isButtonEnabled()" color="primary" @click="handleAction()">
                                     <template v-if="$state.isLoading">
                                         <v-progress-circular size="25" indeterminate color="primary"></v-progress-circular>
                                     </template>
 
                                     <template v-else>
-                                        Sim, {{ getActionText($props.exemplary.active) }}
+                                        Sim, retornar
                                     </template>
                                 </v-btn>
                             </v-card-actions>
@@ -54,20 +60,29 @@
 
 <script setup>
 import { reactive } from 'vue'
-import { ExemplaryServices } from '@/services';
+import { LoanServices } from '@/services';
+import { formatFineCurrency } from '@/utils/fine/format-fine-currency'
 
 const handleAction = (status) => {
-    let method = status ? ExemplaryServices.inactivateExemplary : ExemplaryServices.reactivateExemplary
-    let term = status ? "Inativado" : "Ativado"
+    $state.isLoading = true
 
-    method($props.exemplary.id)
+    let loanId = $props.loan.id
+    let paymentAmount = $props.loan.fine
+
+    let payload = {
+        "loan_id": loanId,
+        "payment_amount": paymentAmount
+    }
+
+    LoanServices.returnLoan(payload)
         .then(() => {
             $emit('snackBar', {
-                "title": `Obra ${$props.exemplary.title} foi ${term.toLowerCase()} com sucesso!`,
+                "title": "Exemplar retornado com sucesso",
                 "type": "success"
             });
         })
-        .catch(({ error }) => {
+        .catch((error) => {
+            console.log(error)
             $emit('snackBar', {
                 "title": error,
                 "type": "error"
@@ -78,13 +93,18 @@ const handleAction = (status) => {
         })
 }
 
+const isButtonEnabled = () => {
+    let wasLate = $props.loan.is_devolution_late
 
-const getActionText = (status) => {
-    return status ? "Inativar" : "Ativar"
+    return wasLate ? $state.paidFine && !$state.isLoading : !$state.isLoading
+}
+
+const getCheckboxLabel = () => {
+    return `Usuário pagou a multa (${formatFineCurrency($props.loan.fine)})`
 }
 
 const $props = defineProps({
-    exemplary: {
+    loan: {
         type: Object,
         required: true
     },
@@ -93,6 +113,7 @@ const $props = defineProps({
 const $state = reactive({
     isLoading: false,
     isOpen: false,
+    paidFine: false
 })
 
 const $emit = defineEmits(['snackBar']);

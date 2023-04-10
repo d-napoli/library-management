@@ -32,13 +32,6 @@ def get_return_date(loan):
     return None if not loan.return_date else str(loan.return_date)
 
 
-def can_customer_loan(customer):
-    customer_has_open_loans = bool(Reservation.objects.filter(reserved_customer=customer))
-    can_loan = not customer_has_open_loans and customer.is_active
-
-    return can_loan
-
-
 def get_days_late(end_date):
     today = datetime.now().date()
 
@@ -56,3 +49,15 @@ def get_loan(loan_id):
     loan = Reservation.objects.filter(pk=loan_id).first()
 
     return bool(loan), loan
+
+
+def dates_valid(start_date, end_date):
+    today = datetime.now().date()
+
+    if start_date.date() >= end_date.date():
+        return False
+
+    if start_date.date() < today or end_date.date() < today:
+        return False
+
+    return True

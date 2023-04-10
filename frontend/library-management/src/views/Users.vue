@@ -25,7 +25,7 @@
             <TableHeader v-else :items="$state.customers">
                 <tbody>
                     <tr v-for="customer in $state.customers" :key="customer.id">
-                        <TableRow :customer="customer" />
+                        <TableRow @snackBar="handleSnackBar($event)" :customer="customer" />
                     </tr>
                 </tbody>
             </TableHeader>

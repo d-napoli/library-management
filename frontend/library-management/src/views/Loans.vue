@@ -5,7 +5,7 @@
         </v-col>
 
         <v-col class="text-right" cols="12" md="2">
-            <NewExemplaryModal @snackBar="handleSnackBar($event)" />
+            <NewLoanModal @snackBar="handleSnackBar($event)" />
         </v-col>
     </v-row>
 
@@ -27,7 +27,7 @@
         </v-col>
     </v-row>
 
-    <!-- <v-snackbar v-model="$alertState.isActive" :color="$alertState.type" :timeout="2000">
+    <v-snackbar v-model="$alertState.isActive" :color="$alertState.type" :timeout="2000">
         {{ $alertState.text }}
 
         <template v-slot:actions>
@@ -35,7 +35,7 @@
                 Fechar
             </v-btn>
         </template>
-    </v-snackbar> -->
+    </v-snackbar>
 </template>
 
 <script setup>
@@ -44,7 +44,7 @@ import PageHeader from '@/components/PageHeader.vue';
 import { TableHeader, TableRow, TableActions } from '@/modules/loans/loans-tables';
 import { onMounted, reactive } from 'vue';
 import { LoanServices } from '@/services';
-import NewExemplaryModal from '@/modules/exemplaries/new-exemplary-modal.vue'
+import NewLoanModal from '@/modules/loans/new-loan-modal.vue'
 
 const $state = reactive({
     loans: null,
@@ -68,20 +68,20 @@ const requestAllLoans = async () => {
         });
 }
 
-// const $alertState = reactive({
-//     isActive: false,
-//     text: null,
-//     type: "info",
-//     duration: 1000
-// })
+const $alertState = reactive({
+    isActive: false,
+    text: null,
+    type: "info",
+    duration: 1000
+})
 
-// const handleSnackBar = (event) => {
-//     $alertState.isActive = true
-//     $alertState.text = event.title
-//     $alertState.type = event.type
+const handleSnackBar = (event) => {
+    $alertState.isActive = true
+    $alertState.text = event.title
+    $alertState.type = event.type
 
-//     if (event.type == "success") {
-//         requestAllExemplaries();
-//     }
-// }
+    if (event.type == "success") {
+        requestAllLoans();
+    }
+}
 </script>

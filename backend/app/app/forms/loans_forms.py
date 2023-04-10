@@ -10,3 +10,10 @@ class CanUserLoanForm(BaseModel):
 class ReturnLoanForm(BaseModel):
     loan_id: int
     payment_amount: Optional[int]
+
+
+class NewLoanForm(BaseModel):
+    start_date: str
+    end_date: str
+    customer_id: int
+    work_id: int

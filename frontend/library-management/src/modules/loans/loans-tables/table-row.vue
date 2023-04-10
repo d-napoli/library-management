@@ -11,6 +11,8 @@
         </v-chip>
     </td>
 
+    <td>{{ $props.loan.exemplary.id }}</td>
+
     <td>{{ getDate($props.loan.start_date) }}</td>
 
     <td>{{ getDate($props.loan.end_date) }}</td>
@@ -31,15 +33,18 @@
 
     <td>{{ formatUserEmail($props.loan.customer.email) }}</td>
 
-    <td>&nbsp;</td>
+    <td>
+        <slot />
+    </td>
 </template>
 
 <script setup>
 import { getBookType, getBookTypeColor, getStatusColor, getStatusText } from '@/constants'
 import { getDate } from '@/utils/date/get-date'
+import { formatFineCurrency } from '@/utils/fine/format-fine-currency'
 
 const getIsLateColor = (isLate) => {
-    return isLate ? "red" : "success"
+    return isLate ? "success" : "red"
 }
 
 const getIsLateText = (isLate) => {
@@ -52,11 +57,6 @@ const formatUserInfo = (firstName, lastName) => {
 
 const formatUserEmail = (userEmail) => {
     return `<${userEmail}>`
-}
-
-const formatFineCurrency = (fine) => {
-    let floatFine = parseFloat(fine).toFixed(2)
-    return `R$ ${floatFine}`
 }
 
 const getFineColor = (fine) => {

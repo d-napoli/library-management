@@ -60,17 +60,6 @@
             </v-list>
         </v-menu>
     </td>
-
-
-    <v-snackbar v-model="$alertState.isActive" :color="$alertState.type" variant="tonal" :timeout="2000">
-        {{ $alertState.text }}
-
-        <template v-slot:actions>
-            <v-btn :color="$alertState.type" variant="text" @click="handleAlertClick">
-                Fechar
-            </v-btn>
-        </template>
-    </v-snackbar>
 </template>
 
 <script setup>
@@ -102,49 +91,30 @@ const handleAlertClick = () => {
 }
 
 const handleAction = () => {
-    $props.customer.is_active ? handleConfirmInactive() : handleConfirmReactivate();
-}
+    let method = $props.customer.is_active ? CustomerServices.inactivateCustomer : CustomerServices.reactivateCustomer
+    let term = $props.customer.is_active ? "inativado" : "ativado"
 
-const handleConfirmInactive = async () => {
     $state.isLoadingActionButton = true;
-    CustomerServices.inactivateCustomer($props.customer.id)
+    method($props.customer.id)
         .then(({ }) => {
             $props.customer.is_active = false
             $state.isOpen = false;
 
-            $alertState.text = `Usuário ${$props.customer.first_name} inativado com sucesso`
-            $alertState.type = "success"
-            $alertState.isActive = true
+            $emit('snackBar', {
+                "title": `Usuário ${$props.customer.first_name} ${term} com sucesso`,
+                "type": "success"
+            });
         })
         .catch(({ error }) => {
-            $alertState.text = `Erro: ${error}`
-            $alertState.type = "danger"
-            $alertState.isActive = true
+            $emit('snackBar', {
+                "title": error,
+                "type": "danger"
+            });
         })
         .finally(() => {
             $state.isLoadingActionButton = false;
         })
 }
 
-const handleConfirmReactivate = async () => {
-    $state.isLoadingActionButton = true;
-
-    CustomerServices.reactivateCustomer($props.customer.id)
-        .then(({ }) => {
-            $props.customer.is_active = true
-            $state.isOpen = false;
-
-            $alertState.text = `Usuário ${$props.customer.first_name} reativado com sucesso`
-            $alertState.type = "success"
-            $alertState.isActive = true
-        })
-        .catch(({ error }) => {
-            $alertState.text = `Erro: ${error}`
-            $alertState.type = "danger"
-            $alertState.isActive = true
-        })
-        .finally(() => {
-            $state.isLoadingActionButton = false;
-        })
-}
+const $emit = defineEmits(['snackBar']);
 </script>

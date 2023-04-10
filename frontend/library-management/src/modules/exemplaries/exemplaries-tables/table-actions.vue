@@ -18,7 +18,7 @@
                         <v-card class="pl-5 pr-5">
                             <v-card-title class="pt-10">
                                 <span class="text-h4" :title="$props.exemplary.title">
-                                    {{ getActionText($props.exemplary.active) }} obra?
+                                    {{ getActionText($props.exemplary.active) }} exemplar?
                                 </span>
 
                                 <p class="text">

@@ -18,6 +18,7 @@ const menuItems = [
     "Título",
     "Autor",
     "Tipo",
+    "Exemplar ID",
     "Dt. Início",
     "Dt. Fim",
     "Dt. Retorno",
